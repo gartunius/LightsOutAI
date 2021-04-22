@@ -1,5 +1,6 @@
 from sys import argv
 from os import path
+from LighsOutAI.Gerente import Gerente
 
 
 def main() :
@@ -7,7 +8,7 @@ def main() :
         csv_file = argv[1]
 
         if path.isfile(csv_file) :
-            print("Arquivo existe")
+            gerente = Gerente(csv_file)
 
         else :
             print("Arquivo não existe, favor verificar o diretório.")
