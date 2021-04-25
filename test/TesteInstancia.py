@@ -1,4 +1,5 @@
-from LighsOutAI import Tabuleiro
+from LighsOutAI.Tabuleiro import Tabuleiro
 
-'''tabuleiro = Tabuleiro(3,'inst01.in')
-tabuleiro.criarTabuleiro()'''
+mvet = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
+tabuleiro = Tabuleiro(mvet)
+print(tabuleiro)

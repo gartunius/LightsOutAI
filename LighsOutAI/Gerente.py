@@ -1,10 +1,12 @@
 import copy
 
+from LighsOutAI.Posicao import Posicao
 from LighsOutAI.Tabuleiro import Tabuleiro
 
 
 class Gerente:
-    def __init__(self, arquivo_tabuleiro_raiz) :
+
+    def __init__(self, arquivo_tabuleiro_raiz):
         self.arquivo_tabuleiro_raiz = arquivo_tabuleiro_raiz
         self.estado_raiz: Tabuleiro
         self.estados_abertos = []
@@ -29,20 +31,21 @@ class Gerente:
             self.estados_abertos.append(estado)
 
     def criar_estado_raiz(self):
-        with open(self.arquivo_tabuleiro_raiz) as arquivo :
+        with open(self.arquivo_tabuleiro_raiz) as arquivo:
             tamanho_tabuleiro = int(arquivo.readline())
             conteudo_arquivo = []
             for linha in arquivo.readlines():
                 conteudo_arquivo.append([int(caractere) for caractere in linha if caractere.strip() != ''])
 
-            self.estado_raiz = Tabuleiro(conteudo_arquivo, tamanho_tabuleiro)
+            self.estado_raiz = Tabuleiro(conteudo_arquivo)
 
     def criar_tabuleiro(self, estado: Tabuleiro):
         estados_filhos = []
-        for linha in range(estado.tamanhoTabuleiro):
-            for coluna in range(estado.tamanhoTabuleiro):
+        for linha in range(estado.tamanhoTab):
+            for coluna in range(estado.tamanhoTab):
                 novo_estado = copy.deepcopy(estado)
-                novo_estado.alternar_valor_do_quadrado(linha, coluna)
+                posicao = Posicao(linha, coluna)
+                novo_estado.alternar_valor_do_quadrado(posicao)
                 # self._return_pretty_pecas(novo_estado.pecas)
                 estados_filhos.append(novo_estado)
 
@@ -57,5 +60,4 @@ class Gerente:
             for coluna in linha:
                 if coluna != 0:
                     return False
-
         return True

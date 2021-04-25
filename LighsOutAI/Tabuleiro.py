@@ -3,83 +3,65 @@ from LighsOutAI.Posicao import Posicao
 
 class Tabuleiro:
     pecas = [[]]
-    tamanhoTabuleiro: int
-    # ultimoClique = Posicao
-    # linha,coluna
-    ultimaMudanca = [None, None]
+    tamanhoTab: int = 3
+    ultimoClique = Posicao(None, None)
+    filhos = []
 
-    def __init__ (self, pecas, tamanho_tabuleiro: int):
+    def __init__(self, pecas):
         self.pecas = pecas
-        self.tamanhoTabuleiro = tamanho_tabuleiro
 
-    def alternar_valor_do_quadrado(self, linha: int, coluna: int):
-        if linha == self.ultimaMudanca[0] and coluna == self.ultimaMudanca[1]:
+    def addFilhos(self, filho):
+        self.filhos.append(filho)
+
+    def getFilhos(self):
+        return self.filhos
+
+    def alternar_valor_do_quadrado(self, posicao: Posicao):
+        linha = posicao.getLinha
+        coluna = posicao.getColuna
+        ultimo_clique = self.getUltimoClique
+        if linha == ultimo_clique.getLinha and coluna == ultimo_clique.getColuna:
             return None
 
-        self._mudar_valor(linha, coluna)
+        self._mudar_valor(posicao)
         try:
-            self._mudar_valor(linha + 1, coluna)
+            posicao.setLinha(linha+1)
+            self._mudar_valor(posicao)
         except IndexError:
             pass
         if linha >= 1:
-            self._mudar_valor(linha - 1, coluna)
+            posicao.setLinha(linha-1)
+            self._mudar_valor(posicao)
         try:
-            self._mudar_valor(linha, coluna + 1)
+            posicao.setColuna(coluna+1)
+            self._mudar_valor(posicao)
         except IndexError:
             pass
         if coluna >= 1:
-            self._mudar_valor(linha, coluna - 1)
+            posicao.setColuna(coluna - 1)
+            self._mudar_valor(posicao)
 
-    def _mudar_valor(self, linha, coluna):
+    def _mudar_valor(self, posicao: Posicao):
+        linha = posicao.getLinha
+        coluna = posicao.getColuna
         if self.pecas[linha][coluna] == 0:
             self.pecas[linha][coluna] = 1
         elif self.pecas[linha][coluna] == 1:
             self.pecas[linha][coluna] = 0
 
     @property
-    def getPecas(self):
-        return self._pecas
-
-    # @pecas.setter
-    def setPecas(self, posicao, valor):
-        posicao = Posicao
-        self.pecas[posicao.getLinha][posicao.getColuna] = valor
-
-    @property
-    def getTamanhoTab(self):
-        return self._tamanhoTab
-
-    @property
     def getUltimoClique(self):
-        return self._ultimoClique
+        return self.ultimoClique
 
     # @ultimoClique.setter
     def setUltimoClique(self, novoClique):
-        novoClique = Posicao
-        self.ultimoClique.setPosicao(novoClique.getLinha(), novoClique.getColuna())       
+        novoClique: Posicao
+        self.ultimoClique.setPosicao(novoClique.getLinha(), novoClique.getColuna())
 
-    def fazerAcao(self):
-        auxiliar = self.getUltimoClique()
-        novaCol = auxiliar.setColuna(auxiliar.getColuna+1)
-        novaLinha = auxiliar.setLinah(auxiliar.setLinha+1)
-        novaPos = Posicao
-
-        if auxiliar.getLinha == self.tamanhoTab-1 and auxiliar.getColuna != self.tamanhoTab-1:
-            novaPos.setColuna(novaCol)
-        else:
-            novaPos.setLinha(novaLinha)
-
-        if auxiliar.getColuna+1 == 0 or auxiliar.getColuna > self.tamanhoTab:
-            self.setPecas()
-
-#tabuleiro = Tabuleiro()
-#
-#def inverteValores(valor):
-#    if valor == 0:
-#        valor = 1
-#        return valor
-#    elif valor == 1:
-#        valor = 0
-#        return valor
-#    else:
-#      return valor
+    def __str__(self):
+        res = ""
+        for i in range(self.tamanhoTab):
+            for j in range(self.tamanhoTab):
+                res = res + str(self.pecas[i][j]) + " "
+            res = res + "\n"
+        return res
