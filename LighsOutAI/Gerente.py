@@ -1,26 +1,61 @@
-from Tabuleiro import Tabuleiro
+import copy
 
-class Gerente :
+from LighsOutAI.Tabuleiro import Tabuleiro
+
+
+class Gerente:
     def __init__(self, arquivo_tabuleiro_raiz) :
         self.arquivo_tabuleiro_raiz = arquivo_tabuleiro_raiz
+        self.estado_raiz: Tabuleiro
         self.estados_abertos = []
         self.estados_fechados = []
 
-    def _ler_arquivo(self):
+        self.main_loop()
+
+    def main_loop(self):
+        self.criar_estado_raiz()
+        self.estados_abertos.append(self.estado_raiz)
+
+        try:
+            while True:
+                for estado in self.estados_abertos:
+                    self._adicionar_aos_estados_abertos(self.criar_tabuleiro(estado))
+
+        except KeyboardInterrupt:
+            print(f"Encerrando\nestados abertos: {self.estados_abertos}\nestados fechados: {self.estados_fechados}")
+
+    def _adicionar_aos_estados_abertos(self, estados):
+        for estado in estados:
+            self.estados_abertos.append(estado)
+
+    def criar_estado_raiz(self):
         with open(self.arquivo_tabuleiro_raiz) as arquivo :
-            arquivo.readline()
+            tamanho_tabuleiro = int(arquivo.readline())
             conteudo_arquivo = []
             for linha in arquivo.readlines():
-                conteudo_arquivo.append([caractere for caractere in linha if caractere.strip() != ''])
+                conteudo_arquivo.append([int(caractere) for caractere in linha if caractere.strip() != ''])
 
-        return conteudo_arquivo
+            self.estado_raiz = Tabuleiro(conteudo_arquivo, tamanho_tabuleiro)
 
-    def criar_tabuleiro(self):
-        pass
+    def criar_tabuleiro(self, estado: Tabuleiro):
+        estados_filhos = []
+        for linha in range(estado.tamanhoTabuleiro):
+            for coluna in range(estado.tamanhoTabuleiro):
+                novo_estado = copy.deepcopy(estado)
+                novo_estado.alternar_valor_do_quadrado(linha, coluna)
+                # self._return_pretty_pecas(novo_estado.pecas)
+                estados_filhos.append(novo_estado)
 
-    def gerar_novos_tabuleiros(self):
-        pass
+        return estados_filhos
 
-    def checar_novo_tabuleiro(self):
-        pass
+    def _return_pretty_pecas(self, pecas):
+        for linha in pecas:
+            print(linha)
 
+    def _checar_tabuleiro(self, tabuleiro: Tabuleiro):
+        for linha in tabuleiro.pecas:
+            for coluna in linha:
+                if coluna != 0:
+                    return False
+
+        return True

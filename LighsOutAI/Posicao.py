@@ -1,6 +1,7 @@
 class Posicao:
     linha = int
     coluna = int
+
     def __init__(self, linha, coluna):
         self.linha = linha
         self.coluna = coluna
@@ -8,16 +9,16 @@ class Posicao:
     @property
     def getLinha(self):
         return self._linha
-    
+
     @property
     def getColuna(self):
         return self._coluna
 
-    @linha.setter
+    # @linha.setter
     def setLinha(self, novaLinha):
         self._linha = novaLinha
-    
-    @coluna.setter
+
+    # @coluna.setter
     def setColuna(self, novaColuna):
         self._coluna = novaColuna
 
