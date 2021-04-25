@@ -40,6 +40,11 @@ class Tabuleiro:
     def getPecas(self):
         return self._pecas
 
+    @pecas.setter
+    def setPecas(self, posicao, valor):
+        posicao = Posicao
+        self.pecas[posicao.getLinha][posicao.getColuna] = valor
+
     @property
     def getTamanhoTab(self):
         return self._tamanhoTab
