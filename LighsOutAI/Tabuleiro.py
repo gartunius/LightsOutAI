@@ -3,18 +3,28 @@ from LighsOutAI.Posicao import Posicao
 
 class Tabuleiro:
     pecas = [[]]
-    tamanhoTabuleiro: int
-    # TODO: converter de lista para objeto 'Posicao'
-    # linha,coluna
+    tamanhoTab: int
+    posicao: Posicao
+    ultimoClique = Posicao(None, None)
+    filhos: list = []
     ultimaMudanca = [None, None]
 
-
-    def __init__(self, pecas, tamanho_tabuleiro: int):
+    def __init__(self, pecas):
         self.pecas = pecas
-        self.tamanhoTabuleiro = tamanho_tabuleiro
 
     def __str__(self):
-        return str(self.pecas)
+        res = ""
+        for i in range(self.tamanhoTab):
+            for j in range(self.tamanhoTab):
+                res = res + str(self.pecas[i][j]) + " "
+            res = res + "\n"
+        return res
+
+    def addFilhos(self, filho):
+        self.filhos.append(filho)
+
+    def getFilhos(self):
+        return self.filhos
 
     def alternar_valor_do_quadrado(self, linha: int, coluna: int):
         if linha == self.ultimaMudanca[0] and coluna == self.ultimaMudanca[1]:
@@ -39,26 +49,18 @@ class Tabuleiro:
 
         return not None
 
+    def setTamanhoTab(self, valor):
+        self.tamanhoTab = valor
+
     def _mudar_valor(self, linha, coluna):
         if self.pecas[linha][coluna] == 0:
             self.pecas[linha][coluna] = 1
         elif self.pecas[linha][coluna] == 1:
             self.pecas[linha][coluna] = 0
 
-    def getPecas(self):
-        return self._pecas
-
-    def setPecas(self, posicao, valor):
-        posicao = Posicao
-        self.pecas[posicao.getLinha][posicao.getColuna] = valor
-
-    def getTamanhoTab(self):
-        return self._tamanhoTab
-
     def getUltimoClique(self):
-        return self._ultimoClique
+        return self.ultimoClique
 
-    def setUltimoClique(self, novoClique):
-        novoClique = Posicao
-        self.ultimoClique.setPosicao(novoClique.getLinha(), novoClique.getColuna())       
+    def setUltimoClique(self, novoClique: Posicao):
+        self.ultimoClique.setPosicao(novoClique.getLinha, novoClique.getColuna)
 

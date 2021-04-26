@@ -1,10 +1,11 @@
 import copy
 
 from LighsOutAI.Tabuleiro import Tabuleiro
+from LighsOutAI.Posicao import Posicao
 
 
 class Gerente:
-    def __init__(self, arquivo_tabuleiro_raiz) :
+    def __init__(self, arquivo_tabuleiro_raiz):
         self.arquivo_tabuleiro_raiz = arquivo_tabuleiro_raiz
         self.estado_raiz: Tabuleiro
         self.estados_abertos = []
@@ -27,18 +28,20 @@ class Gerente:
             self.estados_abertos.append(estado)
 
     def criar_estado_raiz(self):
-        with open(self.arquivo_tabuleiro_raiz) as arquivo :
+        with open(self.arquivo_tabuleiro_raiz) as arquivo:
             tamanho_tabuleiro = int(arquivo.readline())
             conteudo_arquivo = []
             for linha in arquivo.readlines():
                 conteudo_arquivo.append([int(caractere) for caractere in linha if caractere.strip() != ''])
 
-            self.estado_raiz = Tabuleiro(conteudo_arquivo, tamanho_tabuleiro)
+            self.estado_raiz = Tabuleiro(conteudo_arquivo)
+            self.estado_raiz.setTamanhoTab(tamanho_tabuleiro)
 
     def criar_tabuleiro(self, estado: Tabuleiro):
         estados_filhos = []
-        for linha in range(estado.tamanhoTabuleiro):
-            for coluna in range(estado.tamanhoTabuleiro):
+
+        for linha in range(estado.tamanhoTab):
+            for coluna in range(estado.tamanhoTab):
                 novo_estado = copy.deepcopy(estado)
                 checagem_modicicacao = novo_estado.alternar_valor_do_quadrado(linha, coluna)
                 if checagem_modicicacao is not None and novo_estado not in self.estados_fechados:

@@ -8,19 +8,19 @@ class Posicao:
 
     @property
     def getLinha(self):
-        return self._linha
+        return self.linha
 
     @property
     def getColuna(self):
-        return self._coluna
+        return self.coluna
 
     # @linha.setter
     def setLinha(self, novaLinha):
-        self._linha = novaLinha
+        self.linha = novaLinha
 
     # @coluna.setter
     def setColuna(self, novaColuna):
-        self._coluna = novaColuna
+        self.coluna = novaColuna
 
     def setPosicao(self, novaLinha, novaColuna):
         self.setLinha(novaLinha)
