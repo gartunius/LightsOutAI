@@ -3,11 +3,9 @@ from LighsOutAI.Posicao import Posicao
 
 class Tabuleiro:
     pecas = [[]]
-    tamanhoTab: int
-    posicao: Posicao
-    ultimoClique = Posicao(None, None)
-    filhos: list = []
+    estado_pai = None
     ultimaMudanca = [None, None]
+    tamanhoTab: int
 
     def __init__(self, pecas):
         self.pecas = pecas
@@ -19,12 +17,6 @@ class Tabuleiro:
                 res = res + str(self.pecas[i][j]) + " "
             res = res + "\n"
         return res
-
-    def addFilhos(self, filho):
-        self.filhos.append(filho)
-
-    def getFilhos(self):
-        return self.filhos
 
     def alternar_valor_do_quadrado(self, linha: int, coluna: int):
         if linha == self.ultimaMudanca[0] and coluna == self.ultimaMudanca[1]:
@@ -49,18 +41,8 @@ class Tabuleiro:
 
         return not None
 
-    def setTamanhoTab(self, valor):
-        self.tamanhoTab = valor
-
     def _mudar_valor(self, linha, coluna):
         if self.pecas[linha][coluna] == 0:
             self.pecas[linha][coluna] = 1
         elif self.pecas[linha][coluna] == 1:
             self.pecas[linha][coluna] = 0
-
-    def getUltimoClique(self):
-        return self.ultimoClique
-
-    def setUltimoClique(self, novoClique: Posicao):
-        self.ultimoClique.setPosicao(novoClique.getLinha, novoClique.getColuna)
-

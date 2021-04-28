@@ -25,3 +25,6 @@ class Posicao:
     def setPosicao(self, novaLinha, novaColuna):
         self.setLinha(novaLinha)
         self.setColuna(novaColuna)
+
+    def __str__(self):
+        return f"{self.linha}, {self.coluna}"
