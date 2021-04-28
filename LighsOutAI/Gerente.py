@@ -30,6 +30,7 @@ class Gerente:
 
 
     def _mostrar_resultado(self, estado: Tabuleiro):
+        print("linha, coluna")
         while True:
             try:
                 estado_pai = estado.estado_pai
