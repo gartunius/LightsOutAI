@@ -1,7 +1,6 @@
 import copy
 
 from LighsOutAI.Tabuleiro import Tabuleiro
-from LighsOutAI.Posicao import Posicao
 
 
 class Gerente:
@@ -22,6 +21,7 @@ class Gerente:
         while True:
             estado = self.estados_abertos[0]
 
+            print(f"\r[=] Running estados abertos: {len(self.estados_abertos)} / estados fechados: {len(self.estados_fechados)}", end="")
             if self._checar_estado(estado):
                 self._mostrar_resultado(estado)
                 break
@@ -30,14 +30,13 @@ class Gerente:
 
 
     def _mostrar_resultado(self, estado: Tabuleiro):
-        print("linha, coluna")
+        print("\n[linha, coluna]")
         while True:
-            try:
-                estado_pai = estado.estado_pai
-                if estado_pai is not None:
-                    print(estado.ultimaMudanca)
+            estado_pai = estado.estado_pai
+            if estado_pai is not None:
+                print(f"{estado.ultimaMudanca}")
                 estado = estado_pai
-            except AttributeError:
+            else:
                 print("===")
                 break
 
@@ -79,13 +78,10 @@ class Gerente:
 
 
     def _checar_se_fechado(self, estado: Tabuleiro):
-        for fechado in self.estados_fechados:
-            for index_linha in range(self.tamanho_tabuleiro):
-                for index_coluna in range(self.tamanho_tabuleiro):
-                    if estado.pecas[index_linha][index_coluna] != fechado.pecas[index_linha][index_coluna]:
-                        return False
-
-        return True
+        for estado_fechado in self.estados_fechados:
+            if estado_fechado == estado:
+                return True
+        return False
 
 
     def _checar_estado(self, estado: Tabuleiro):

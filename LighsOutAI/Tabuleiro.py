@@ -1,5 +1,3 @@
-from LighsOutAI.Posicao import Posicao
-
 
 class Tabuleiro:
     pecas = [[]]
@@ -11,12 +9,14 @@ class Tabuleiro:
         self.pecas = pecas
 
     def __str__(self):
-        res = ""
-        for i in range(self.tamanhoTab):
-            for j in range(self.tamanhoTab):
-                res = res + str(self.pecas[i][j]) + " "
-            res = res + "\n"
-        return res
+        return str(self.pecas)
+
+    def __eq__(self, other):
+        for linha in range(self.tamanhoTab):
+            for coluna in range(self.tamanhoTab):
+                if self.pecas[linha][coluna] != other.pecas[linha][coluna]:
+                    return False
+        return True
 
     def alternar_valor_do_quadrado(self, linha: int, coluna: int):
         if linha == self.ultimaMudanca[0] and coluna == self.ultimaMudanca[1]:
