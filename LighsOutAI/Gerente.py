@@ -5,11 +5,12 @@ from LighsOutAI.Tabuleiro import Tabuleiro
 
 class Gerente:
 
-    def __init__(self, arquivo_tabuleiro_raiz):
+    def __init__(self, arquivo_tabuleiro_raiz, log_file):
         self.arquivo_tabuleiro_raiz = arquivo_tabuleiro_raiz
         self.estado_raiz: Tabuleiro
         self.estados_abertos = []
         self.estados_fechados = []
+        self.log_file = log_file
 
         self.main_loop()
 
@@ -18,19 +19,29 @@ class Gerente:
         self.criar_estado_raiz()
         self.estados_abertos.append(self.estado_raiz)
 
-        while True:
-            estado = self.estados_abertos[0]
+        with open(self.log_file, 'w') as log_file:
+            while True:
+                estado = self.estados_abertos[0]
+                print(f"\r[=] Running estados abertos: {len(self.estados_abertos)} / estados fechados: {len(self.estados_fechados)}", end="")
 
-            print(f"\r[=] Running estados abertos: {len(self.estados_abertos)} / estados fechados: {len(self.estados_fechados)}", end="")
-            if self._checar_estado(estado):
-                self._mostrar_resultado(estado)
-                break
+                log_file.write(f"{estado} estado_pai\n")
+                if self._checar_estado(estado):
+                    self._mostrar_resultado(estado)
+                    break
 
-            self._adicionar_aos_estados_abertos(self.criar_tabuleiro(estado))
+                estados_filhos = self.criar_tabuleiro(estado)
+
+                for estado_log in estados_filhos:
+                    log_file.write(f"{estado_log}\n")
+
+                log_file.write("\n")
+
+                self._adicionar_aos_estados_abertos(estados_filhos)
+                self._fechar_estado(estado)
 
 
     def _mostrar_resultado(self, estado: Tabuleiro):
-        print("\n[linha, coluna]")
+        print("\n[linha, coluna] começando em 0")
         while True:
             estado_pai = estado.estado_pai
             if estado_pai is not None:
@@ -65,11 +76,9 @@ class Gerente:
             for coluna in range(self.tamanho_tabuleiro):
                 estado_filho = copy.deepcopy(estado_pai)
 
-                # Se o valor do quadrado for alterado
-                if estado_filho.alternar_valor_do_quadrado(linha, coluna) is not None:
-                    estado_filho.ultimaMudanca = [linha, coluna]
-                    estado_filho.tamanhoTab = self.tamanho_tabuleiro
-                    estado_filho.estado_pai = estado_pai
+                if linha != estado_pai.ultimaMudanca[0] or coluna != estado_pai.ultimaMudanca[1]:
+                    estado_filho.alternar_valor_do_quadrado(linha, coluna)
+                    estado_filho.estado_pai = estado_pai  # type: ignore
 
                     if not self._checar_se_fechado(estado_filho):
                         estados_filhos.append(estado_filho)
@@ -88,12 +97,15 @@ class Gerente:
         for linha in estado.pecas:
             for coluna in linha:
                 if coluna != 0:
-                    if estado in self.estados_abertos:
-                        self.estados_abertos.remove(estado)
-                        self.estados_fechados.append(estado)
-                    else:
-                        raise Exception("o estado não esta na lista dos estados abertos")
                     return False
-
         return True
+
+    def _fechar_estado(self, estado):
+        if estado in self.estados_abertos:
+            self.estados_abertos.remove(estado)
+            self.estados_fechados.append(estado)
+        else:
+            raise Exception("o estado não esta na lista dos estados abertos")
+
+
 

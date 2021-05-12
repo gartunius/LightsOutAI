@@ -19,11 +19,8 @@ class Tabuleiro:
         return True
 
     def alternar_valor_do_quadrado(self, linha: int, coluna: int):
-        if linha == self.ultimaMudanca[0] and coluna == self.ultimaMudanca[1]:
-            return None
-
-        self.ultimaMudanca[0] = linha
-        self.ultimaMudanca[1] = coluna
+        self.ultimaMudanca[0] = linha  # type: ignore
+        self.ultimaMudanca[1] = coluna  # type: ignore
 
         self._mudar_valor(linha, coluna)
         try:
@@ -38,8 +35,6 @@ class Tabuleiro:
             pass
         if coluna >= 1:
             self._mudar_valor(linha, coluna - 1)
-
-        return not None
 
     def _mudar_valor(self, linha, coluna):
         if self.pecas[linha][coluna] == 0:
