@@ -45,6 +45,15 @@ class Gerente:
         while True:
             estado_pai = estado.estado_pai
             if estado_pai is not None:
+
+                for i in range(estado.tamanhoTab):
+                    print("\n")
+                    for j in range(estado.tamanhoTab):
+                        if i == estado.ultimaMudanca[0] and j == estado.ultimaMudanca[1]:
+                            print("1 ")
+                        else:
+                            print("0 ")
+                print("Os '1' representam as células clicadas")
                 print(f"{estado.ultimaMudanca}")
                 estado = estado_pai
             else:
