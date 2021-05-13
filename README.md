@@ -1,5 +1,5 @@
 # LightsOutAI
-Gabriel Ataide Santos - 
+Gabriel Ataide Santos - N515AG7 - CC4P12
 
 Vinicius Maximiliano - F096955 - CC4P12
 
