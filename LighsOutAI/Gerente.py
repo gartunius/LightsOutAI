@@ -28,18 +28,31 @@ class Gerente:
 
             self._adicionar_aos_estados_abertos(self.criar_tabuleiro(estado))
 
-
     def _mostrar_resultado(self, estado: Tabuleiro):
+        print("\n[linha, coluna] começando em 0")
+        clique = 1
+        pecas = [[]]
+        if len(estado.pecas) == 3:
+            pecas = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        elif len(estado.pecas) == 4:
+            pecas = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        res = Tabuleiro(pecas)
+
         while True:
-            try:
-                estado_pai = estado.estado_pai
-                if estado_pai is not None:
-                    print(estado.ultimaMudanca)
+            estado_pai = estado.estado_pai
+            if estado_pai is not None:
+                for i in range(len(estado.pecas)):
+                    for j in range(len(estado.pecas)):
+                        if i == estado.ultimaMudanca[0] and j == estado.ultimaMudanca[1]:
+                            res.set_pecas(i, j, 1)
+                print(f"{clique}º clique: {estado.ultimaMudanca}")
                 estado = estado_pai
-            except AttributeError:
+            else:
                 print("===")
                 break
-
+            clique = clique + 1
+        print("Os '1' representam as células clicadas")
+        print(res)
 
     def _adicionar_aos_estados_abertos(self, estados):
         for estado in estados:

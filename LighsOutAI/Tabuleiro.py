@@ -9,6 +9,7 @@ class Tabuleiro:
 
     def __init__(self, pecas):
         self.pecas = pecas
+        self.tamanhoTab = len(self.pecas)
 
     def __str__(self):
         res = ""
@@ -46,3 +47,6 @@ class Tabuleiro:
             self.pecas[linha][coluna] = 1
         elif self.pecas[linha][coluna] == 1:
             self.pecas[linha][coluna] = 0
+
+    def set_pecas(self, i, j, valor):
+        self.pecas[i][j] = valor
